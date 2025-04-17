@@ -151,7 +151,7 @@ const ExerciseScreen = () => {
 
 
       <View style={styles.container}>
-      {loading && (
+        {loading && (
           <View style={styles.loadingOverlay}>
             <ActivityIndicator size="large" color="white" />
           </View>
@@ -183,26 +183,31 @@ const ExerciseScreen = () => {
                 )}
               </View>
               <View style={styles.inputContainer}>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Serie"
-                  value={exercise.series}
-                  onChangeText={(text) => {
-                    setExercises((prev) =>
-                      prev.map((ex, i) => (i === index ? { ...ex, series: text } : ex))
-                    );
-                  }}
-                />
-                <TextInput
-                  style={styles.input}
-                  placeholder="Repeticiones"
-                  value={exercise.reps}
-                  onChangeText={(text) => {
-                    setExercises((prev) =>
-                      prev.map((ex, i) => (i === index ? { ...ex, reps: text } : ex))
-                    );
-                  }}
-                />
+              <TextInput
+                style={styles.input}
+                placeholder="Serie"
+                value={exercise.series}
+                keyboardType="numeric"
+                onChangeText={(text) => {
+                  const filtered = text.replace(/[^0-9\/\-\|]/g, '');
+                  setExercises((prev) =>
+                    prev.map((ex, i) => (i === index ? { ...ex, series: filtered } : ex))
+                  );
+                }}
+              />
+
+              <TextInput
+                style={styles.input}
+                placeholder="Repeticiones"
+                value={exercise.reps}
+                keyboardType="numeric"
+                onChangeText={(text) => {
+                  const filtered = text.replace(/[^0-9\/\-\|]/g, '');
+                  setExercises((prev) =>
+                    prev.map((ex, i) => (i === index ? { ...ex, reps: filtered } : ex))
+                  );
+                }}
+              />
                 <TouchableOpacity style={styles.imageButton} onPress={() => pickImage(index)}>
                   <Entypo name="upload" size={24} color="blue" />  
                 </TouchableOpacity>
@@ -328,6 +333,18 @@ const styles = StyleSheet.create({
   exerciseBlock: {
     marginBottom: 20, 
   },
+
+  loadingOverlay: { 
+    position: 'absolute', 
+    top: 0, left: 0, right: 0, bottom: 0, 
+    backgroundColor: 'rgba(0, 0, 0, 0.6)', 
+    justifyContent: 'center', 
+    alignItems: 'center',
+    zIndex: 9999, // 👈 Añade esto
+    elevation: 9999 // 👈 Para Android
+  },
+
+
 });
 
 export default ExerciseScreen;
