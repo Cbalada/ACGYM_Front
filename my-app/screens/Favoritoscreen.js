@@ -65,9 +65,13 @@ const FavoritosScreen = () => {
     }
   };
 
-  const filteredRutinas = rutinas.filter((rutina) =>
+  const filteredRutinas = rutinas
+  .filter(rutina => 
+    rutina.activa && 
     rutina.nombre.toLowerCase().includes(searchText.toLowerCase())
-  );
+  )
+  .sort((a, b) => a.nombre.localeCompare(b.nombre));
+
 
   const renderFavoritos = ({ item }) => (
     <View style={styles.rutinaContainer}>

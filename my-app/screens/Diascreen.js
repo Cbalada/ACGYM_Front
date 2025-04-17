@@ -46,7 +46,14 @@ const DiaScreen = () => {
 
       <View style={styles.icons}>
         <TouchableOpacity>
-          <Text>▶️</Text>
+
+          <Ionicons 
+            name="chevron-forward" 
+            size={30} 
+            color='black'
+            style={styles.arrow}
+          />
+
         </TouchableOpacity>
       </View>
     </View>

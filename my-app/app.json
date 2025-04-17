@@ -20,7 +20,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "acgym.com.ar"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -31,8 +32,11 @@
       "ios": "expo start --ios",
       "web": "expo start --web",
       "web-build": "expo export:web"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "e44aa7c6-1e65-494b-ae03-237a96e0fa7e"
+      }
     }
-
-
   }
 }
