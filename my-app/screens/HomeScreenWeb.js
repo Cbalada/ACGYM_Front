@@ -385,7 +385,10 @@ const HomeScreenWeb = () => {
                   
             <View style={styles.searchButtonContainer}>
               <TouchableOpacity onPress={() => setShowSearch(!showSearch)} style={styles.iconButton}>
-                <FontAwesome name="search" size={20} color="white" />
+                <Image
+                  source={require("../assets/buscar.png")}
+                  style={styles.searchIcon}
+                />
               </TouchableOpacity>
 
               <TouchableOpacity onPress={toggleFilters} style={styles.iconButton}>
@@ -488,7 +491,11 @@ const HomeScreenWeb = () => {
 };
 
 const styles = StyleSheet.create({
-  
+  searchIcon: {
+    width: 24,
+    height: 24,
+    resizeMode: 'contain',
+  },
   iconButton: {
     backgroundColor: '#4B0082',
     borderRadius: 50,

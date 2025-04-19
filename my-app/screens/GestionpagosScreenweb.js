@@ -156,7 +156,10 @@ const GestionPagoScreenWeb = () => {
             <View style={styles.filterContainer}>
               <View style={styles.searchButtonContainer}>
               <TouchableOpacity onPress={() => setShowSearch(!showSearch)} style={styles.searchButton}>
-                  <FontAwesome name="search" size={20} color="white" style={styles.searchicon}/>
+                  <Image
+                    source={require("../assets/buscar.png")}
+                    style={styles.searchIcon}
+                  />
               </TouchableOpacity>
 
               <TouchableOpacity onPress={() => setFilterVisible(!filterVisible)} style={styles.filterButton}>
@@ -214,6 +217,11 @@ const GestionPagoScreenWeb = () => {
 };
 
 const styles = StyleSheet.create({
+  searchIcon: {
+    width: 24,
+    height: 24,
+    resizeMode: 'contain',
+  },
   totalContainer: {
     flexDirection: 'row',
     alignItems: 'center',

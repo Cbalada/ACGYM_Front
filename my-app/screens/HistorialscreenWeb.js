@@ -1,6 +1,6 @@
 import { DataTable } from 'react-native-paper';
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, useWindowDimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, useWindowDimensions, Image } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import Sidebar from '../screens/SidebarScreenWeb';
 import { API_CONFIG } from '../constants/config';
@@ -50,7 +50,10 @@ const UserHistoryScreen = () => {
             />
           )}
           <TouchableOpacity onPress={() => setShowSearch(!showSearch)} style={styles.searchButton}>
-            <FontAwesome name="search" size={20} color="white" />
+            <Image
+              source={require("../assets/buscar.png")}
+              style={styles.searchIcon}
+            />
           </TouchableOpacity>
         </View>
 
@@ -77,6 +80,11 @@ const UserHistoryScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  searchIcon: {
+    width: 24,
+    height: 24,
+    resizeMode: 'contain',
+  },
   container: {
     flexDirection: 'row',
     flex: 1,

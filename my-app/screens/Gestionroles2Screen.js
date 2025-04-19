@@ -117,13 +117,27 @@ const GestionRoles2ScreenWeb = () => {
                 onPress={() => setShowActiveUsers(!showActiveUsers)} 
                 style={styles.statusToggleButton}
               >
-                <FontAwesome name="user" size={20} color={showActiveUsers ? "green" : "red"} />
+                <Image
+                  source={showActiveUsers 
+                    ? require("../assets/user_activo.png") 
+                    : require("../assets/user_inactivo.png")
+                  }
+                  style={styles.userStatusIcon}
+                />
               </TouchableOpacity>
+
               <TouchableOpacity onPress={() => setShowSearch(!showSearch)} style={styles.searchButton}>
-                <FontAwesome name="search" size={20} color="white" style={styles.searchicon}/>
+                <Image
+                  source={require("../assets/buscar.png")}
+                  style={styles.searchIcon}
+                />
               </TouchableOpacity>
+
               <TouchableOpacity onPress={() => setFilterVisible(!filterVisible)} style={styles.filterButton}>
-                <Image source={require("../assets/filter.png")} size={20}  style={styles.filterIcon} />
+                <Image 
+                  source={require("../assets/filter.png")} 
+                  style={styles.filterIcon} 
+                />
               </TouchableOpacity>
             </View>
           </View>
@@ -158,6 +172,16 @@ const GestionRoles2ScreenWeb = () => {
 
 
 const styles = StyleSheet.create({
+  searchIcon: {
+    width: 24,
+    height: 24,
+    resizeMode: 'contain',
+  },
+  userStatusIcon: {
+    width: 24,
+    height: 24,
+    resizeMode: 'contain',
+  },
   statusToggleButton: {
     borderRadius: 50,
     backgroundColor: '#4B0082',

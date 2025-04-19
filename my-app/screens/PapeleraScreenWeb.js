@@ -193,7 +193,10 @@ const PapeleraScreenWeb = () => {
                 onPress={() => setShowSearch(!showSearch)}
                 style={styles.searchButton}
               >
-                <FontAwesome name="search" size={20} color="white" />
+                <Image
+                  source={require("../assets/buscar.png")}
+                  style={styles.searchIcon}
+                />
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -260,6 +263,11 @@ const PapeleraScreenWeb = () => {
 };
 
 const styles = StyleSheet.create({
+  searchIcon: {
+    width: 24,
+    height: 24,
+    resizeMode: 'contain',
+  },
   filterButton: {
     backgroundColor: '#4B0082',
     padding: 10,

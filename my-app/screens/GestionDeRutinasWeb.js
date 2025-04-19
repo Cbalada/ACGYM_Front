@@ -180,12 +180,18 @@ const GestionDeRutinaScreenWeb = () => {
                 />
                 {index === 0 && (
                   <TouchableOpacity style={styles.botonAgregar} onPress={agregarDia}>
-                    <AntDesign name="pluscircle" size={24} color="blue" />
+                      <Image 
+                        source={require("../assets/mas.png")} 
+                        style={styles.iconButton}
+                      />
                   </TouchableOpacity>
                 )}
                 {dias.length > 1 && (
                   <TouchableOpacity style={styles.botonEliminar} onPress={() => eliminarDia(index)}>
-                    <Entypo name="minus" size={24} color="red" />
+                      <Image 
+                        source={require("../assets/menos.png")} 
+                        style={styles.iconButton}
+                      />
                   </TouchableOpacity>
                 )}
               </View>
@@ -211,6 +217,11 @@ const GestionDeRutinaScreenWeb = () => {
 };
 
 const styles = StyleSheet.create({
+  iconButton: {
+    width: 24,
+    height: 24,
+    resizeMode: 'contain',
+  },
   safeArea: {
     flex: 1,
     flexDirection: 'row',
