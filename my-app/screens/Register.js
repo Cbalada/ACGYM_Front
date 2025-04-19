@@ -5,6 +5,8 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import { API_CONFIG } from '../constants/config';
+import { Picker } from '@react-native-picker/picker';
+
 
 const RegistroScreen = () => {
   const navigation = useNavigation();
@@ -17,6 +19,10 @@ const RegistroScreen = () => {
     telefono: '',
     tipoPlan: '',
     contrasena: '',
+    turno: '',
+    colorFavorito: '',
+    animalFavorito: '',
+    comidaFavorita: '',
   });
 
   const [imageUri, setImageUri] = useState(null);
@@ -41,6 +47,10 @@ const RegistroScreen = () => {
       contacto: "",
       role: "user",
       fecha_registro: new Date().toISOString(),
+      turno: form.turno || "",
+      colorFavorito: form.colorFavorito || "",
+      animalFavorito: form.animalFavorito || "",
+      comidaFavorita: form.comidaFavorita || "",
     };
   
     try {
@@ -131,42 +141,83 @@ const RegistroScreen = () => {
   };
 
   return (
+
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Registro</Text>
 
-      {Object.entries(form).map(([key, value]) => (
-        <TextInput
-          key={key}
-          style={styles.input}
-          placeholder={key.charAt(0).toUpperCase() + key.slice(1)}
-          value={value}
-          onChangeText={(text) => handleChange(key, text)}
-          secureTextEntry={key === 'contrasena'}
-        />
-      ))}
+        {Object.entries(form).map(([key, value]) => {
+          if (key === 'turno') return null;
+          return (
+            <TextInput
+              key={key}
+              style={styles.input}
+              placeholder={key.charAt(0).toUpperCase() + key.slice(1)}
+              value={value}
+              onChangeText={(text) => handleChange(key, text)}
+              secureTextEntry={key === 'contrasena'}
+            />
+          );
+        })}
+        <View style={styles.input}>
+          <Picker
+            selectedValue={form.turno}
+            onValueChange={(itemValue) => handleChange('turno', itemValue)}
+          >
+            <Picker.Item label="Selecciona un turno" value="" />
+            <Picker.Item label="Turno Mañana" value="mañana" />
+            <Picker.Item label="Turno Tarde" value="tarde" />
+            <Picker.Item label="Turno Noche" value="noche" />
+          </Picker>
+        </View>
 
-      <TouchableOpacity style={styles.uploadButton} onPress={selectImage}>
-        <Text style={styles.uploadText}>Seleccionar Imagen</Text>
-      </TouchableOpacity>
 
-      {imageUri && <Image source={{ uri: imageUri }} style={styles.image} />}
+        <Text style={styles.label}>¿Cuál es tu color favorito?</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Color favorito"
+            value={form.colorFavorito}
+            onChangeText={(text) => handleChange('colorFavorito', text)}
+          />
 
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity  
-          style={[styles.button, styles.cancelButton]}  
-          onPress={() => navigation.navigate('Login')}>
-          <Text style={styles.buttonText}>Cancelar</Text>
-        </TouchableOpacity>
+          <Text style={styles.label}>¿Cuál es tu animal favorito?</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Animal favorito"
+            value={form.animalFavorito}
+            onChangeText={(text) => handleChange('animalFavorito', text)}
+          />
 
-        <TouchableOpacity style={[styles.button, styles.acceptButton]} onPress={handleRegister}>
-          <Text style={styles.buttonText}>Aceptar</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
-  );
-};
+          <Text style={styles.label}>¿Cuál es tu comida favorita?</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Comida favorita"
+            value={form.comidaFavorita}
+            onChangeText={(text) => handleChange('comidaFavorita', text)}
+          />
+
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity  
+            style={[styles.button, styles.cancelButton]}  
+            onPress={() => navigation.navigate('Login')}>
+            <Text style={styles.buttonText}>Cancelar</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[styles.button, styles.acceptButton]} onPress={handleRegister}>
+            <Text style={styles.buttonText}>Aceptar</Text>
+          </TouchableOpacity>
+        </View>
+
+        </ScrollView>
+      );
+    };
 
 const styles = StyleSheet.create({
+  label: {
+    alignSelf: 'flex-start',
+    fontWeight: 'bold',
+    marginTop: 10,
+    marginBottom: 5,
+  },
   container: {
     flexGrow: 1,
     justifyContent: 'center',
