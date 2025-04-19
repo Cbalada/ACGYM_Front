@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { API_CONFIG } from '../constants/config';
+import { useMemo } from 'react';
+import { Platform } from 'react-native';
 
 const QuestionScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
@@ -93,9 +95,12 @@ const QuestionScreen = ({ navigation }) => {
   };
 
   const handleNext = async () => {
-    if (preguntas && selectedOption !== preguntas[questions[step].key]) {
+    if (preguntas && selectedOption !== preguntas[questionsWithAnswers[step].key]) {
       await updateStrikes(preguntas.id);
-      navigation.navigate('LoginWeb');
+      Platform.OS === 'android' || Platform.OS === 'ios'
+      ? navigation.navigate('Login')
+        
+      : navigation.navigate('LoginWeb');
       return;
     }
 
@@ -137,11 +142,29 @@ const QuestionScreen = ({ navigation }) => {
       }
 
       alert('Contraseña cambiada con éxito');
-      navigation.navigate('LoginWeb');
+      Platform.OS === 'web' ? navigation.navigate('LoginWeb') : navigation.navigate('Login');
     } catch (error) {
       setErrorMessage('Hubo un error al cambiar la contraseña.');
     }
   };
+
+  const questionsWithAnswers = useMemo(() => {
+    if (!preguntas) return questions;
+  
+    return questions.map((q) => {
+      const correctAnswer = preguntas[q.key]; // respuesta correcta
+      const options = [...q.options]; // copia de opciones originales
+  
+      // índice aleatorio para reemplazar
+      const randomIndex = Math.floor(Math.random() * options.length);
+      options[randomIndex] = correctAnswer;
+  
+      return {
+        ...q,
+        options,
+      };
+    });
+  }, [preguntas]);
 
   return (
     <View style={styles.container}>
@@ -191,7 +214,11 @@ const QuestionScreen = ({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.button}
-              onPress={() => navigation.navigate('LoginWeb')}
+              onPress={() =>
+                Platform.OS === 'web'
+                  ? navigation.navigate('LoginWeb')
+                  : navigation.navigate('Login')
+              }
             >
               <Text style={styles.buttonText}>Cancelar</Text>
             </TouchableOpacity>
@@ -201,7 +228,7 @@ const QuestionScreen = ({ navigation }) => {
       ) : (
         <View>
           <Text style={styles.question}>{questions[step].question}</Text>
-          {questions[step].options.map((option, index) => (
+          {questionsWithAnswers[step].options.map((option, index) => (
             <TouchableOpacity
               key={index}
               style={[styles.option, selectedOption === option && styles.selectedOption]}

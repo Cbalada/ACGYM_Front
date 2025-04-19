@@ -24,14 +24,19 @@ const RegistroScreen = () => {
     animalFavorito: '',
     comidaFavorita: '',
   });
+  
 
   const [imageUri, setImageUri] = useState(null);
-
+  const [loading, setLoading] = useState(false);
   const handleChange = (name, value) => {
     setForm((prevForm) => ({ ...prevForm, [name]: value }));
   };
 
   const handleRegister = async () => {
+
+    if (loading) return; // prevenir múltiples clics
+    setLoading(true);
+
     const datosUsuario = {
       nombre: form.nombre || "",
       apellido: form.apellido || "",
@@ -48,9 +53,7 @@ const RegistroScreen = () => {
       role: "user",
       fecha_registro: new Date().toISOString(),
       turno: form.turno || "",
-      colorFavorito: form.colorFavorito || "",
-      animalFavorito: form.animalFavorito || "",
-      comidaFavorita: form.comidaFavorita || "",
+
     };
   
     try {
@@ -88,6 +91,8 @@ const RegistroScreen = () => {
       console.log(idUsuario)
       Alert.alert("Éxito", "Usuario registrado correctamente");
   
+      await registrarPreguntasUsuario(idUsuario);
+
       if (!imageUri) {
         console.log("No se seleccionó ninguna imagen");
         return;
@@ -113,9 +118,36 @@ const RegistroScreen = () => {
   
       Alert.alert("Éxito", "Imagen subida correctamente");
       navigation.navigate("Login");
-  
+
+ 
     } catch (error) {
       Alert.alert("Error", error.message);
+    } finally {
+      setLoading(false); // habilitar el botón nuevamente si falla algo
+    }
+  };
+
+  
+
+  const registrarPreguntasUsuario = async (idUsuario) => {
+    const PreguntasUsuario = {
+      idUser: idUsuario,
+      pregunta1: form.colorFavorito || "",
+      pregunta2: form.animalFavorito || "",
+      pregunta3: form.comidaFavorita || "",
+      strikes: 0
+    };
+  
+    const response = await fetch(`${API_CONFIG.BASE_URL}/preguntas`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(PreguntasUsuario),
+    });
+  
+    if (!response.ok) {
+      throw new Error("Error al registrar las preguntas de seguridad");
     }
   };
   
@@ -146,7 +178,7 @@ const RegistroScreen = () => {
       <Text style={styles.title}>Registro</Text>
 
         {Object.entries(form).map(([key, value]) => {
-          if (key === 'turno') return null;
+          if (['turno', 'colorFavorito', 'animalFavorito', 'comidaFavorita'].includes(key)) return null;
           return (
             <TextInput
               key={key}
@@ -158,6 +190,7 @@ const RegistroScreen = () => {
             />
           );
         })}
+
         <View style={styles.input}>
           <Picker
             selectedValue={form.turno}
@@ -202,9 +235,14 @@ const RegistroScreen = () => {
             <Text style={styles.buttonText}>Cancelar</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={[styles.button, styles.acceptButton]} onPress={handleRegister}>
-            <Text style={styles.buttonText}>Aceptar</Text>
+          <TouchableOpacity
+            style={[styles.button, styles.acceptButton, loading && { opacity: 0.5 }]}
+            onPress={handleRegister}
+            disabled={loading}
+          >
+            <Text style={styles.buttonText}>{loading ? 'Registrando...' : 'Aceptar'}</Text>
           </TouchableOpacity>
+
         </View>
 
         </ScrollView>
