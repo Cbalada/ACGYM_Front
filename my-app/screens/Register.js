@@ -8,8 +8,11 @@ import { API_CONFIG } from '../constants/config';
 import { Picker } from '@react-native-picker/picker';
 
 
+
+
 const RegistroScreen = () => {
   const navigation = useNavigation();
+  const [photoUrl, setPhotoUrl] = useState(null);
   const [form, setForm] = useState({
     nombre: '',
     apellido: '',
@@ -172,10 +175,33 @@ const RegistroScreen = () => {
     }
   };
 
+  
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+  
+    if (!result.canceled) {
+      setPhotoUrl(result.assets[0].uri); // Actualiza el estado con la imagen seleccionada
+    }
+  };
+
   return (
 
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Registro</Text>
+
+      <TouchableOpacity onPress={selectImage} style={styles.imageContainer}>
+        <Image
+          source={imageUri ? { uri: imageUri } : require('../assets/pepicons-print--cloud-up.png')}
+          style={styles.photo}
+        />
+        <Text style={ { color:'##000'} }>Subir foto de perfil</Text>
+      </TouchableOpacity>
+
 
         {Object.entries(form).map(([key, value]) => {
           if (['turno', 'colorFavorito', 'animalFavorito', 'comidaFavorita'].includes(key)) return null;
@@ -250,6 +276,17 @@ const RegistroScreen = () => {
     };
 
 const styles = StyleSheet.create({
+  imageContainer: {
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  photo: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: '##5ad4ff',
+  },
+  
   label: {
     alignSelf: 'flex-start',
     fontWeight: 'bold',
@@ -267,6 +304,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
+    color:'#0ba5e6',
   },
   input: {
     width: '100%',
