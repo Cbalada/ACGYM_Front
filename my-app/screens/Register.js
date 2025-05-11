@@ -20,7 +20,6 @@ const RegistroScreen = () => {
     usuario: '',
     email: '',
     telefono: '',
-    tipoPlan: '',
     contrasena: '',
     turno: '',
     colorFavorito: '',

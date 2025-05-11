@@ -1,7 +1,7 @@
 {
   "expo": {
     "jsEngine": "hermes",
-    "name": "my-app",
+    "name": "ACGYM",
     "slug": "my-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -11,7 +11,7 @@
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#f9ebde"
     },
     "ios": {
       "supportsTablet": true
@@ -37,6 +37,7 @@
       "eas": {
         "projectId": "e44aa7c6-1e65-494b-ae03-237a96e0fa7e"
       }
-    }
+    },
+    "owner": "agustinbaptista"
   }
 }
