@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, ActivityIndicator, ScrollView, Modal } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, ActivityIndicator, ScrollView, Modal, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesome } from '@expo/vector-icons';
 import Sidebar from '../screens/SidebarScreenWeb';
@@ -25,6 +25,11 @@ const HomeScreenWeb = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [orderAsc, setOrderAsc] = useState(true);
   const [sortedRutinas, setSortedRutinas] = useState([]);
+  const [enviando, setEnviando] = useState(false);
+  const [successModalVisible, setSuccessModalVisible] = useState(false);
+
+
+
   
   useEffect(() => {
     // Ordenar la lista cada vez que cambie orderAsc o rutinas
@@ -170,6 +175,7 @@ const HomeScreenWeb = () => {
   };
   
   const enviarRutina = async () => {
+    setEnviando(true);
     if (!selectedRoutine || selectedUsers.length === 0) {
       console.error("Debe seleccionar una rutina y al menos un usuario.");
       return;
@@ -284,16 +290,18 @@ const HomeScreenWeb = () => {
         }
       });
   
-      // Esperar que todas las solicitudes terminen
-      await Promise.all(requests);
-  
-      // Cerrar el modal y limpiar la selección
+      await Promise.all(requests); // ✅ Espera que terminen todas las rutinas
       setModalVisible(false);
+      setSuccessModalVisible(true);
       setSelectedUsers([]);
+  
+
   
       console.log("Todas las rutinas, días y ejercicios fueron enviados correctamente.");
     } catch (error) {
       console.error("Error al enviar rutinas:", error);
+    } finally {
+      setEnviando(false); // ✅ Rehabilita el botón por si se vuelve a usar
     }
   };
   
@@ -479,18 +487,71 @@ const HomeScreenWeb = () => {
               <TouchableOpacity style={[styles.actionButton, styles.cancelButton]} onPress={handleCloseModal}>
                 <Text style={styles.actionText}>Cancelar</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={[styles.actionButton, styles.confirmButton]} onPress={enviarRutina}>
-                <Text style={styles.actionText}>Enviar</Text>
+              <TouchableOpacity
+                style={[styles.actionButton, styles.confirmButton, enviando && { opacity: 0.5 }]}
+                onPress={enviarRutina}
+                disabled={enviando}
+              >
+                <Text style={styles.actionText}>{enviando ? "Enviando..." : "Enviar"}</Text>
               </TouchableOpacity>
             </View>
           </View>
         </View>
       </Modal>
+
+      {successModalVisible && (
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={successModalVisible}
+          onRequestClose={() => setSuccessModalVisible(false)}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.successModalCard}>
+              <Text style={styles.successText}>Las rutinas fueron enviadas correctamente.</Text>
+              <TouchableOpacity
+                style={styles.successButton}
+                onPress={() => setSuccessModalVisible(false)}
+              >
+                <Text style={styles.successButtonText}>Aceptar</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      )}
+
+
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  successModalCard: {
+    backgroundColor: '#d4edda',
+    borderRadius: 10,
+    padding: 20,
+    alignItems: 'center',
+    marginHorizontal: 30,
+    elevation: 5,
+  },
+  successText: {
+    color: '#155724',
+    fontSize: 16,
+    marginBottom: 15,
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  successButton: {
+    backgroundColor: '#28a745',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  successButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
   searchIcon: {
     width: 24,
     height: 24,

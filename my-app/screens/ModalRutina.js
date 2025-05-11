@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 20,
     borderRadius: 10,
-    width: '80%',
+    width: '50%',
   },
   title: {
     fontSize: 20,
