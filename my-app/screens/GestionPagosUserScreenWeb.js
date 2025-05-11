@@ -243,12 +243,16 @@ const GestionPagosUserScreenWeb = () => {
               </View>
               <TextInput
                 style={styles.input}
-                placeholder="$Monto"
+                placeholder="Monto"
                 value={monto}
                 onChangeText={(text) => {
-                  // Eliminar cualquier carácter que no sea número
-                  const numericValue = text.replace(/[^0-9]/g, '');
-                  setMonto(numericValue);
+                  // Permitir solo números, coma, punto y símbolo $
+                  const cleaned = text
+                    .replace(/[^0-9.,$]/g, '')  // solo permite esos caracteres
+                    .replace(/(\..*)\./g, '$1') // evita más de un punto decimal
+                    .replace(/(,.*),/g, '$1');  // evita más de una coma decimal
+
+                  setMonto(cleaned);
                 }}
                 keyboardType="numeric"
               />

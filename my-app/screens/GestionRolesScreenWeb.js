@@ -194,6 +194,7 @@ const UserProfileScreen = () => {
   return (
     <View style={styles.container}>
       {/* <Sidebar /> */}
+    <ScrollView contentContainerStyle={styles.contentContainer}>
 
       <View style={styles.contentContainer}>
         <Card style={styles.card}>
@@ -253,22 +254,19 @@ const UserProfileScreen = () => {
         </Card>
 
         {/* Rutinas */}
-        <Card style={styles.card}>
+        <Card style={styles.cardChico}>
           <Card.Title title="Rutinas" />
-          <Card.Content style={styles.altoFlatList}>
-          <ScrollView style={styles.scrollView}>
-            {user.rutinas.length > 0 ? (
-              user.rutinas.map((rutina, index) => 
-            
-                <Text key={index} style={styles.dataText}>• {rutina}
-                
-                </Text>  
-            )
-          ) : (
-            <Text style={styles.dataText}>No hay rutinas asignadas</Text>
-          )}
-          </ScrollView>
-          </Card.Content>
+
+            <ScrollView style={styles.scrollView}>
+              {user.rutinas.length > 0 ? (
+                user.rutinas.map((rutina, index) => 
+                  <Text key={index} style={styles.dataText}>• {rutina}</Text>  
+                )
+              ) : (
+                <Text style={styles.dataText}>No hay rutinas asignadas</Text>
+              )}
+            </ScrollView>
+
         </Card>
 
         {/* Botones de Acción */}
@@ -304,11 +302,29 @@ const UserProfileScreen = () => {
 
         </View>
       </View>
+      </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  cardChico: {
+    marginBottom: 12,
+    borderRadius: 10,
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    backgroundColor: "#FFF",
+    padding: 12,
+    height: 200, // o la altura deseada
+  },
+  
+  contentContainer: {
+    padding: 20,
+    flexGrow: 1,
+  },  
   select: {
     marginLeft: 5,
     fontSize: 14,
@@ -328,9 +344,10 @@ const styles = StyleSheet.create({
     height: 250,
   },
   scrollView: {
+    padding: 10,
+    backgroundColor: "#fff",
     maxHeight: 400,
-    overflowY: 'auto', 
-    backgroundColor: 'white', 
+    marginBottom: 10,
   },
   container: {
     flex: 1,
@@ -398,40 +415,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
-
-  },
-  editButton: {
-    backgroundColor: "#607D8B",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    minWidth: 100,
-    height: 40,
-  },
-  blockButton: {
-    backgroundColor: "#D32F2F",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    minWidth: 100,
-    height: 40,
-  },
-  enableButton: {
-    backgroundColor: "#388E3C",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    minWidth: 100,
-    height: 40,
-  },
-
-  buttonBase: {
-    height: 40,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 12, // espacio interno horizontal
-    borderRadius: 5, // o el valor que estés usando
+    marginVertical: 20,
   },
   
 
