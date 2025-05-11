@@ -18,7 +18,7 @@ const GestionPagoScreenWeb = () => {
   const [order, setOrder] = useState('asc'); // Estado para orden (ascendente o descendente)
   const [pagos, setPagos] = useState([])
   const [totalMes, setTotalMes] = useState(0);
-  const [showTotal, setShowTotal] = useState(false);
+  const [showTotal, setShowTotal] = useState(true);
   const route = useRoute();
 
   useEffect(() => {
@@ -193,30 +193,54 @@ const GestionPagoScreenWeb = () => {
             </ScrollView>
           )}
         />
-        <View style={styles.totalContainer}>
-          <Text style={styles.totalLabel}>Total Del Mes:</Text>
-          <View style={styles.valueContainer}>
-            <Text style={styles.totalValue}>
-              {showTotal ? `$${totalMes.toFixed(2)}` : '******'}
-            </Text>
-            <TouchableOpacity 
-              onPress={() => setShowTotal(!showTotal)}
-              style={styles.eyeIconContainer}
-            >
-              <FontAwesome 
-                name={showTotal ? 'eye-slash' : 'eye'} 
-                size={20} 
-                color="#4B0082" 
-              />
-            </TouchableOpacity>
+           <View style={styles.totalContainer}>
+              <Text style={styles.totalLabel}>Total Del Mes:</Text>
+              <View style={styles.valueContainer}>
+                <Text style={styles.totalValue}>
+                  {showTotal ? `$${totalMes.toFixed(2)}` : '******'}
+                </Text>
+                <TouchableOpacity 
+                  onPress={() => setShowTotal(!showTotal)}
+                  style={styles.eyeIconContainer}
+                >
+                  <Image 
+                    source={
+                      showTotal
+                        ? require('../assets/eyes.png')
+                        : require('../assets/eyesoff.png')
+                    }
+                    style={styles.eyeImage}
+                    resizeMode="contain"
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
-        </View>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  totalContainer: {
+    // tu estilo aquí
+  },
+  totalLabel: {
+    // tu estilo aquí
+  },
+  valueContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  totalValue: {
+    // tu estilo aquí
+  },
+  eyeIconContainer: {
+    marginLeft: 8,
+  },
+  eyeImage: {
+    width: 20,
+    height: 20,
+  },
   searchIcon: {
     width: 24,
     height: 24,
