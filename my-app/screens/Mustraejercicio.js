@@ -157,15 +157,18 @@ const Muestraejercicio = () => {
           <View style={styles.profileContainer}>
             <TouchableOpacity onPress={pickImage} style={styles.imageContainer}>
 
-              <Image
-                source={
-                  imageUrl
-                    ? { uri: imageUrl }
-                    : require('../assets/default-grey.png')
-                }
-                onError={() => setImageError(true)}
-                style={styles.image}
-              />
+            <Image
+              source={
+                photoUrl
+                  ? { uri: photoUrl }
+                  : imageError || !imageUrl
+                  ? require('../assets/precarga_ejercicio.png')
+                  : { uri: imageUrl }
+              }
+              onError={() => setImageError(true)}
+              style={styles.image}
+            />
+
               {editMode && (
                 <View style={styles.uploadIconContainer}>
                   <Image source={require('../assets/upload.png')} style={styles.uploadIcon} />

@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 import { API_CONFIG } from '../constants/config';
 import { Ionicons } from '@expo/vector-icons';
+import precargaEjercicio from '../assets/precarga_ejercicio.png';
 
 
 
@@ -66,27 +67,34 @@ const EjercicioScreen = () => {
     fetchEjercicios();
   }, []);
 
-  const renderEjercicio = ({ item }) => {
-    const nota = notas[item.id] || { id: item.id, serie: '-', repeticiones: '-', kilos: '-' };
-
+  const CardEjercicio = ({ item, nota, navigation }) => {
+    const [imageError, setImageError] = useState(false);
+  
     return (
       <View style={styles.card}>
-        {/* Imagen del ejercicio */}
         <View style={styles.imagePlaceholder}>
-          <Image source={{ uri: item.imageUrl }} style={styles.image} resizeMode="cover" />
+          <Image
+            source={
+              imageError || !item.imageUrl
+                ? require('../assets/precarga_ejercicio.png')
+                : { uri: item.imageUrl }
+            }
+            style={styles.image}
+            resizeMode="cover"
+            onError={() => setImageError(true)}
+          />
         </View>
-
-        {/* Contenedor de texto */}
+  
         <View style={styles.textContainer}>
           <TouchableOpacity onPress={() => navigation.navigate('Mustraejercicio', { 
             nota, 
             nombre: item.nombre, 
-            imageUrl: item.imageUrl, // Añadimos imageUrl aquí
+            imageUrl: item.imageUrl,
             idEjercicio: item.id
           })}>
             <Text style={styles.rutinaText}>{item.nombre}</Text>
           </TouchableOpacity>
-
+  
           <View style={styles.infoContainer}>
             <Text style={styles.infoText}>{nota.serie} Series</Text>
             <Text style={styles.infoText}> | </Text>
@@ -98,6 +106,14 @@ const EjercicioScreen = () => {
       </View>
     );
   };
+  
+
+  const renderEjercicio = ({ item }) => {
+    const nota = notas[item.id] || { id: item.id, serie: '-', repeticiones: '-', kilos: '-' };
+    return <CardEjercicio item={item} nota={nota} navigation={navigation} />;
+  };
+  
+  
 
   return (
     <SafeAreaView style={{ flex: 1}}>

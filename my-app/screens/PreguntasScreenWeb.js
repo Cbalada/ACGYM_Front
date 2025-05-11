@@ -176,14 +176,21 @@ const QuestionScreen = ({ navigation }) => {
             value={username}
             onChangeText={setUsername}
             placeholder="Nombre de usuario"
-          />
-          <TouchableOpacity
-            style={[styles.button, !username && styles.disabledButton]}
-            onPress={handleAccept}
-            disabled={!username}
-          >
-            <Text style={styles.buttonText}>Aceptar</Text>
-          </TouchableOpacity>
+          /> 
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.buttonCancelar} onPress={() => navigation.goBack()}>
+              <Text style={styles.buttonText}>Cancelar</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity
+              style={[styles.button, !username && styles.disabledButton]}
+              onPress={handleAccept}
+              disabled={!username}
+            >
+
+              <Text style={styles.buttonText}>Aceptar</Text>
+            </TouchableOpacity>
+          </View>
           {isBlocked && <Text style={styles.errorText}>Usuario bloqueado - contactar con un administrador</Text>}
           {errorMessage ? <Text style={styles.errorText}>{errorMessage}</Text> : null}
         </View>
@@ -261,6 +268,8 @@ const styles = StyleSheet.create({
   label: { fontSize: 18, marginBottom: 10 },
   input: { borderWidth: 1, padding: 10, width: '100%', marginBottom: 10, borderRadius: 5 },
   button: { backgroundColor: '#007bff', padding: 10, borderRadius: 5, alignItems: 'center', marginHorizontal: 5 },
+  buttonCancelar: { backgroundColor: '#ec5353', padding: 10, borderRadius: 5, alignItems: 'center', marginHorizontal: 5 },
+
   buttonText: { color: 'white', fontSize: 16 },
   disabledButton: { backgroundColor: '#cccccc' },
   question: { fontSize: 20, marginBottom: 10, textAlign: 'center' },
